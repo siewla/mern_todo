@@ -1,6 +1,7 @@
 //Dependencies
 const express   = require('express');
 const mongoose  = require('mongoose');
+const path      = require('path');
 const app       = express();
 const dotenv    = require('dotenv');
 dotenv.config();
@@ -8,7 +9,9 @@ const db        = mongoose.connection;
 
 
 app.use(express.json());
-app.use(express.static('public'));
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'client/build')));
 
 
 //Environment Variables
@@ -18,6 +21,12 @@ const mongoURI  =   process.env.MONGODB_URI;
 // Routes
 const todosController = require('./controllers/todos.js');
 app.use('/todos', todosController);
+
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname+'/client/build/index.html'));
+});
 
 // Connect to Mongo
 mongoose.connect(mongoURI, { useNewUrlParser: true, useUnifiedTopology: true },
