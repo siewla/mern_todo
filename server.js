@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 
 //Environment Variables
-const PORT      =   process.env.PORT || 3000;
+const PORT      =   process.env.PORT || 4000;
 const mongoURI  =   process.env.MONGODB_URI;
 
 // Routes
